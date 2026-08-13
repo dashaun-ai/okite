@@ -12,19 +12,19 @@ spring:
       base-url: http://sekisho.apps.internal:8080/v1
       chat:
         options:
-          model: batiai/nemotron3-nano:iq3
+          model: gemma4:26b
       embedding:
         options:
           model: nomic-embed-text:latest
 
 kansei:
-  model: batiai/nemotron3-nano:iq3
+  model: gemma4:26b
   web-search:
     base-url: http://searxng.kansei-services.svc.cluster.local:8080
 
 embabel:
   models:
-    default-llm: batiai/nemotron3-nano:iq3
+    default-llm: gemma4:26b
 
 koubou:
   enabled: true

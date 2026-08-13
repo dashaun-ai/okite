@@ -10,5 +10,6 @@ if grep -REni '(client-secret|password:|private-key|signing-key)' --include='*.y
   exit 1
 fi
 
-grep -q 'batiai/nemotron3-nano:iq3' kansei.yml
+test "$(grep -c 'gemma4:26b' kansei.yml)" -eq 3
+! grep -q 'batiai/nemotron3-nano:iq3' kansei.yml
 grep -q 'destination: sashizu.config' application.yml
