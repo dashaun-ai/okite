@@ -12,19 +12,19 @@ spring:
       base-url: http://sekisho.apps.internal:8080/v1
       chat:
         options:
-          model: gemma4:26b
+          model: gemma4:latest
       embedding:
         options:
           model: nomic-embed-text:latest
 
 kansei:
-  model: gemma4:26b
+  model: gemma4:latest
   web-search:
     base-url: http://searxng.kansei-services.svc.cluster.local:8080
 
 embabel:
   models:
-    default-llm: gemma4:26b
+    default-llm: gemma4:latest
 
 koubou:
   enabled: true
