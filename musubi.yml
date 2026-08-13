@@ -1,0 +1,26 @@
+musubi:
+  services:
+    postgresql:
+      host: postgresql.kansei-services.svc.cluster.local
+      port: 5432
+      database: kansei_events
+      username: kansei
+    rabbitmq:
+      host: rabbitmq.kansei-services.svc.cluster.local
+      port: 5672
+      username: kansei
+      virtual-host: /
+    redis:
+      host: redis.kansei-services.svc.cluster.local
+      port: 6379
+    lgtm:
+      host: lgtm.kansei-services.svc.cluster.local
+      otlp-http-port: 4318
+      otlp-grpc-port: 4317
+      grafana-url: https://grafana.127-0-0-1.nip.io
+
+management:
+  opentelemetry:
+    resource-attributes:
+      service.name: musubi
+      service.namespace: dashaun-ai

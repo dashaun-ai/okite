@@ -1,0 +1,39 @@
+spring:
+  ai:
+    mcp:
+      client:
+        streamable-http:
+          connections:
+            koubou:
+              url: http://100.117.170.53:8090
+            kura:
+              url: http://100.117.170.53:8095
+    openai:
+      base-url: http://sekisho.apps.internal:8080/v1
+      chat:
+        options:
+          model: batiai/nemotron3-nano:iq3
+      embedding:
+        options:
+          model: nomic-embed-text:latest
+
+kansei:
+  model: batiai/nemotron3-nano:iq3
+  web-search:
+    base-url: http://searxng.kansei-services.svc.cluster.local:8080
+
+embabel:
+  models:
+    default-llm: batiai/nemotron3-nano:iq3
+
+koubou:
+  enabled: true
+
+kura:
+  enabled: true
+
+management:
+  opentelemetry:
+    resource-attributes:
+      service.name: kansei
+      service.namespace: dashaun-ai

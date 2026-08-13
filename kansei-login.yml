@@ -1,0 +1,30 @@
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          inkan:
+            authorization-uri: https://inkan.dashaun.ai/oauth2/authorize
+            token-uri: http://inkan.apps.internal:8080/oauth2/token
+            user-info-uri: http://inkan.apps.internal:8080/userinfo
+            jwk-set-uri: http://inkan.apps.internal:8080/oauth2/jwks
+        registration:
+          inkan:
+            redirect-uri: https://kansei.dashaun.ai/login/oauth2/code/inkan
+
+kansei:
+  logout:
+    end-session-uri: https://inkan.dashaun.ai/connect/logout
+    post-logout-redirect-uri: https://kansei.dashaun.ai/
+
+sekisho:
+  client:
+    token-uri: http://inkan.apps.internal:8080/oauth2/token
+
+koubou:
+  client:
+    token-uri: http://inkan.apps.internal:8080/oauth2/token
+
+kura:
+  client:
+    token-uri: http://inkan.apps.internal:8080/oauth2/token

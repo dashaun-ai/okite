@@ -1,0 +1,23 @@
+spring:
+  cloud:
+    bus:
+      destination: sashizu.config
+
+management:
+  otlp:
+    metrics:
+      export:
+        url: http://lgtm.kansei-services.svc.cluster.local:4318/v1/metrics
+        step: 10s
+  opentelemetry:
+    logging:
+      export:
+        otlp:
+          endpoint: http://lgtm.kansei-services.svc.cluster.local:4318/v1/logs
+    tracing:
+      export:
+        otlp:
+          endpoint: http://lgtm.kansei-services.svc.cluster.local:4318/v1/traces
+  tracing:
+    sampling:
+      probability: 1.0

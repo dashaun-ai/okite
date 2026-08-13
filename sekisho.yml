@@ -1,0 +1,46 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://inkan.apps.127-0-0-1.nip.io
+          jwk-set-uri: http://inkan.apps.internal:8080/oauth2/jwks
+
+sekisho:
+  backends:
+    - prefix: juice
+      name: JUICE Ollama
+      type: OLLAMA
+      base-url: http://100.117.170.53:11434
+      health-url: http://100.117.170.53:11434/api/tags
+    - prefix: traveler
+      name: TRAVELER Ollama
+      type: OLLAMA
+      base-url: http://100.116.191.85:11434
+      health-url: http://100.116.191.85:11434/api/tags
+    - prefix: kintsugi
+      name: KINTSUGI Ollama
+      type: OLLAMA
+      base-url: http://100.105.149.44:11434
+      health-url: http://100.105.149.44:11434/api/tags
+    - prefix: gemini
+      name: Google Gemini
+      type: GEMINI
+      base-url: https://generativelanguage.googleapis.com/v1beta/openai
+      api-key: ${GEMINI_API_KEY:unset}
+    - prefix: cloud
+      name: Anthropic
+      type: ANTHROPIC
+      base-url: https://api.anthropic.com/v1
+      api-key: ${ANTHROPIC_API_KEY:unset}
+    - prefix: openai
+      name: OpenAI
+      type: OPENAI
+      base-url: https://api.openai.com/v1
+      api-key: ${OPENAI_API_KEY:unset}
+
+management:
+  opentelemetry:
+    resource-attributes:
+      service.name: sekisho
+      service.namespace: dashaun-ai

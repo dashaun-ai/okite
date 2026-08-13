@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+for app in inkan musubi sekisho kansei karakuri; do
+  test -f "$app.yml"
+done
+
+if grep -REni '(client-secret|password:|private-key|signing-key)' --include='*.yml' .; then
+  echo "possible secret committed to Okite" >&2
+  exit 1
+fi
+
+grep -q 'batiai/nemotron3-nano:iq3' kansei.yml
+grep -q 'destination: sashizu.config' application.yml

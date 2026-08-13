@@ -1,0 +1,7 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            redirect-uri: https://inkan.dashaun.ai/login/oauth2/code/github

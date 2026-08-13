@@ -1,0 +1,8 @@
+.DS_Store
+.idea/
+.vscode/
+.env
+.envrc
+*.pem
+*.p12
+*.jks

@@ -1,0 +1,13 @@
+eizo:
+  url: http://100.117.170.53:8098
+  client:
+    token-uri: http://inkan.apps.internal:8080/oauth2/token
+
+kura:
+  url: http://100.117.170.53:8095
+
+management:
+  opentelemetry:
+    resource-attributes:
+      service.name: karakuri
+      service.namespace: dashaun-ai
