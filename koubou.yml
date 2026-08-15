@@ -1,0 +1,17 @@
+# Non-secret runtime configuration for the standalone Koubou workshop.
+# Machine-specific paths may still be overridden in the process environment.
+koubou:
+  repo-root: ${KOUBOU_REPO_ROOT:${user.home}/fun}
+  worktree-root: ${KOUBOU_WORKTREE_ROOT:${user.home}/koubou/worktrees}
+  lease-ttl: ${KOUBOU_LEASE_TTL:4h}
+  sweep-interval: ${KOUBOU_SWEEP_INTERVAL:15m}
+
+management:
+  opentelemetry:
+    resource-attributes:
+      service.name: koubou
+      service.namespace: dashaun-ai
+
+info:
+  koubou:
+    configuration: sashizu
