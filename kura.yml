@@ -1,0 +1,15 @@
+# Non-secret runtime configuration for the standalone Kura storehouse.
+# Machine-specific paths may still be overridden in the process environment.
+kura:
+  vault-root: ${KURA_VAULT_ROOT:${user.home}/Documents/Obsidian Vault}
+  write-root: ${KURA_WRITE_ROOT:Kiroku}
+
+management:
+  opentelemetry:
+    resource-attributes:
+      service.name: kura
+      service.namespace: dashaun-ai
+
+info:
+  kura:
+    configuration: sashizu
