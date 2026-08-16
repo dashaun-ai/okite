@@ -7,6 +7,7 @@ spring:
           jwk-set-uri: http://inkan.apps.internal:8080/oauth2/jwks
 
 sekisho:
+  inventory-refresh-interval: 15m
   backends:
     - prefix: juice
       name: JUICE Ollama
