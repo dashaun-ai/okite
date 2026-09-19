@@ -20,10 +20,15 @@ sekisho:
       base-url: http://100.116.191.85:11434
       health-url: http://100.116.191.85:11434/api/tags
     - prefix: kintsugi
-      name: KINTSUGI Ollama
-      type: OLLAMA
-      base-url: http://100.105.149.44:11434
-      health-url: http://100.105.149.44:11434/api/tags
+      name: KINTSUGI vLLM
+      type: VLLM
+      base-url: http://100.105.149.44:8000/v1
+      health-url: http://100.105.149.44:8000/v1/models
+    - prefix: spark
+      name: SPARK vLLM
+      type: VLLM
+      base-url: http://100.91.161.110:8000/v1
+      health-url: http://100.91.161.110:8000/v1/models
     - prefix: gemini
       name: Google Gemini
       type: GEMINI
