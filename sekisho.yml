@@ -24,11 +24,16 @@ sekisho:
       type: VLLM
       base-url: http://100.105.149.44:8000/v1
       health-url: http://100.105.149.44:8000/v1/models
+      # vLLM's OpenAI-compatible listing carries no capabilities field, so the node declares what its
+      # models support. DeepSeek-V4-Flash and Qwen3-Coder are both reasoning and tool-calling models.
+      capabilities: [completion, tools, reasoning]
     - prefix: spark
       name: SPARK vLLM
       type: VLLM
       base-url: http://100.91.161.110:8000/v1
       health-url: http://100.91.161.110:8000/v1/models
+      # DeepSeek-V4-Flash is a reasoning model and supports tool calling; declared, not discoverable.
+      capabilities: [completion, tools, reasoning]
     - prefix: gemini
       name: Google Gemini
       type: GEMINI
