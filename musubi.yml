@@ -17,7 +17,7 @@ musubi:
       host: lgtm.kansei-services.svc.cluster.local
       otlp-http-port: 4318
       otlp-grpc-port: 4317
-      grafana-url: https://grafana.127-0-0-1.nip.io
+      grafana-url: http://grafana.kansei-services.svc.cluster.local:3000
 
 management:
   opentelemetry:

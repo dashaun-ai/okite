@@ -1,16 +1,16 @@
 inkan:
-  issuer: https://inkan.apps.127-0-0-1.nip.io
+  issuer: https://inkan.dashaun.ai
   web-client:
     redirect-uris:
       - https://kansei.dashaun.ai/login/oauth2/code/inkan
-      - https://kansei.apps.127-0-0-1.nip.io/login/oauth2/code/inkan
+      - http://kansei.apps.internal:8080/login/oauth2/code/inkan
       - https://karakuri.dashaun.ai/login/oauth2/code/inkan
-      - https://karakuri.apps.127-0-0-1.nip.io/login/oauth2/code/inkan
+      - http://karakuri.apps.internal:8080/login/oauth2/code/inkan
     post-logout-redirect-uris:
       - https://kansei.dashaun.ai/
-      - https://kansei.apps.127-0-0-1.nip.io/
+      - http://kansei.apps.internal:8080/
       - https://karakuri.dashaun.ai/
-      - https://karakuri.apps.127-0-0-1.nip.io/
+      - http://karakuri.apps.internal:8080/
 
 management:
   opentelemetry:

@@ -1,15 +1,98 @@
 #!/usr/bin/env bash
+# Guards the invariants that Sashizu's clients depend on but cannot check for themselves.
+# Run it before pushing: a bad value here reaches every connected application at once.
 set -euo pipefail
 
+fail() {
+  echo "verify: $*" >&2
+  exit 1
+}
+
 for app in inkan musubi sekisho kansei karakuri; do
-  test -f "$app.yml"
+  test -f "$app.yml" || fail "missing $app.yml -- Sashizu would serve that application nothing"
 done
 
+# Okite is a Git repository, so secrets belong in platform environment variables or service
+# bindings. This is the only check here that matters for security; keep it above the rest.
 if grep -REni '(client-secret|password:|private-key|signing-key)' --include='*.yml' .; then
-  echo "possible secret committed to Okite" >&2
-  exit 1
+  fail "possible secret committed to Okite -- see the matches above"
 fi
 
-test "$(grep -c 'gemma4:26b' kansei.yml)" -eq 3
-! grep -q 'batiai/nemotron3-nano:iq3' kansei.yml
-grep -q 'destination: sashizu.config' application.yml
+# Kansei names its chat model three times, once for each framework that has to ask for it:
+# Spring AI's OpenAI client, Kansei's own property, and Embabel's default LLM. The embedding
+# model sits next to the first of those and is deliberately not part of this set.
+#
+# They have to agree. A partial rename leaves Kansei requesting one model from Sekisho while
+# Embabel requests another, which surfaces as confusing runtime behaviour rather than here.
+#
+# This asserts the three agree rather than pinning a literal model name. The literal version
+# ("this name appears exactly 3 times") turned every routine model change into a failure of
+# this script, and because the failure was a bare `test` with no message it read as a config
+# problem -- so it sat broken, taking the secret check above down with it.
+python3 - <<'PY' || fail "kansei.yml chat model check failed"
+import sys
+
+try:
+    import yaml
+except ModuleNotFoundError:
+    sys.exit("verify needs PyYAML: pip3 install pyyaml")
+
+CHAT_MODEL_KEYS = [
+    ("spring", "ai", "openai", "chat", "options", "model"),
+    ("kansei", "model"),
+    ("embabel", "models", "default-llm"),
+]
+
+
+def lookup(document, path):
+    node = document
+    for key in path:
+        if not isinstance(node, dict) or key not in node:
+            return None
+        node = node[key]
+    return node
+
+
+try:
+    with open("kansei.yml", encoding="utf-8") as handle:
+        kansei = yaml.safe_load(handle)
+except yaml.YAMLError as error:
+    # Sashizu would serve this file as-is, so a syntax error here reaches Kansei.
+    sys.exit(f"kansei.yml is not valid YAML:\n{error}")
+
+declared = {}
+missing = []
+for path in CHAT_MODEL_KEYS:
+    dotted = ".".join(path)
+    value = lookup(kansei, path)
+    if value is None:
+        missing.append(dotted)
+    else:
+        declared[dotted] = value
+
+if missing:
+    print("kansei.yml no longer declares a chat model at:", file=sys.stderr)
+    for dotted in missing:
+        print(f"  {dotted}", file=sys.stderr)
+    print("Either the key moved (update CHAT_MODEL_KEYS in verify) or a declaration was "
+          "dropped, which leaves that framework on its own default.", file=sys.stderr)
+    sys.exit(1)
+
+if len(set(declared.values())) != 1:
+    print("kansei.yml declares more than one chat model -- a partial rename?", file=sys.stderr)
+    for dotted, value in declared.items():
+        print(f"  {dotted} = {value}", file=sys.stderr)
+    sys.exit(1)
+PY
+
+# A quantisation that was tried and produced unusable output. Named explicitly so nobody
+# reaches for it again; harmless to keep, since it only fires if the name comes back.
+! grep -q 'batiai/nemotron3-nano:iq3' kansei.yml \
+  || fail "kansei.yml selects batiai/nemotron3-nano:iq3, a model this platform rejected"
+
+# Without this, Config Monitor has no bus to publish onto and clients never learn a change
+# landed -- they keep serving the configuration they started with.
+grep -q 'destination: sashizu.config' application.yml \
+  || fail "application.yml no longer sets spring.cloud.bus.destination to sashizu.config"
+
+echo "verify: ok"
